@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springBootProject.model.User;
-import springBootProject.repositories.UserRepository;
+import springBootProject.repositories.UsersRepository;
 
 
 import java.util.List;
@@ -15,31 +15,31 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;}
+    public UserService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;}
 
 //==============================================================
-public List<User> findAll(){return userRepository.findAll();}
+public List<User> findAll(){return usersRepository.findAll();}
 //==============================================================
 public User findOne(int id){
-     Optional<User> foundUser = userRepository.findById(id);
+     Optional<User> foundUser = Optional.ofNullable(usersRepository.findById(id));
      return foundUser.orElse(null);}
 //==============================================================
     @Transactional
-    public void save(User user){userRepository.save(user);}
+    public void save(User user){usersRepository.save(user);}
 //==============================================================
     @Transactional
     public void update(int id, User updateUser){
         updateUser.setId(id);
-        userRepository.save(updateUser);// ДЛЯ ОБНОВЛЕНИЯ СУЩНОСТИ И ДЛЯ ДОБАВЛЕНИЯ ОДИН И ТОТ ЖЕ МЕТОД SAVE
+        usersRepository.update(updateUser);
     }
 //==============================================================
     @Transactional
     public void delete(int id){
-        userRepository.deleteById(id);
+        usersRepository.deleteById(id);
     }
 //==============================================================
 }
